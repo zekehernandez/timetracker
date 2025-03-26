@@ -172,3 +172,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# JetBrains things
+.idea
+
+# specific to this repo
+task.json
+task.md
