@@ -118,17 +118,24 @@ class Taskmaster:
         durations = list(map(self.calculate_duration, task["activities"]))
         total_duration = sum(durations)
         lines.append(f"# {task["summary"]}")
-        lines.append(f"Total duration: {self.format_duration(total_duration)}")
+        lines.append(f"Task duration: {self.format_duration(total_duration)}")
 
         for i, activity in enumerate(task["activities"]):
             self.export_activity(activity,durations[i], lines)
 
+        return total_duration
+
     def export(self):
         lines = []
         with open(f"{self.EXPORT_FILE_NAME}", "w") as file:
+            total_duration = 0
             for task in self._tasks:
-                self.export_task(task, lines)
+                total_duration += self.export_task(task, lines)
+
+            lines.append(f"# Total")
+            lines.append(f"Duration: {self.format_duration(total_duration)}")
             file.write("\n".join(lines))
+
         print("Export Complete!")
 
     def handle_main_loop(self):
